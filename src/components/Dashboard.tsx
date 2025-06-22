@@ -10,6 +10,7 @@ import { useState } from "react"
 import { useLLM } from '@/hooks/useLLM'
 import ElasticSlider from "@/blocks/Components/ElasticSlider/ElasticSlider"
 import * as pdfjsLib from 'pdfjs-dist'
+import { extractTextToQues } from '@/hooks/extractTextToQuesn'
 
 // Mock data for study activity (similar to GitHub contributions)
 const generateActivityData = () => {
@@ -92,6 +93,8 @@ export default function Dashboard() {
         (progress) => setUploadProgress(Math.round(progress * 100)),
         selectedPages
       );
+    //   const jsonObj=extractTextToQues(text);
+    //   console.log(jsonObj)
       setIsUploading(false);
       setIsExtracted(true);
       settext(text);
@@ -111,6 +114,9 @@ export default function Dashboard() {
     if (text !== "") {
       const returned_Quiz = await useLLM(text);
       console.log(returned_Quiz);
+      const data=extractTextToQues(returned_Quiz)
+      console.log("the quesn inn json is  ",data);
+
     }
   };
 
