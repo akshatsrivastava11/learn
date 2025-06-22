@@ -25,13 +25,13 @@ export const extractTextToQues = async (text: string) => {
       } else if (line.startsWith('ANS.')) {
         currentQuestion!.answer = line.replace('ANS.', '').trim();
       }
-      console.log("Quesn is ",questions);
-      // Push the final question
-      if (currentQuestion) {
-        questions.push(currentQuestion);
-      }
     }
-  
+    
+    console.log("Quesn is ",questions);
+    // Push the final question
+    if (currentQuestion) {
+      questions.push(currentQuestion);
+    }
     return questions;
   };
   

@@ -23,8 +23,11 @@ model User {
 
 model Quesn_Atoms {
   id     String  @id @unique @default(cuid())
-  Quesn  String?
-  Answer String?
+  Quesn  String
+  Answer String
+  Option1 String
+  Option2 String
+  Option3 String
   Quiz   Quiz?   @relation(fields: [quizId], references: [id])
   quizId String?
 }
