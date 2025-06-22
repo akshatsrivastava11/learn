@@ -56,9 +56,9 @@ colors={[1, 2, 3, 1, 2, 3, 1, 4]}
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
               Smarter Studying with
               <br />
-              <span className="text-gray-600">AI Flashcards & Spaced Repetition</span>
+              <span className="text-white">AI Flashcards & Spaced Repetition</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
               Join the 21st century of learning and ace your exams with <strong>2x less study time</strong>. Learn
               uses AI-generated flashcards, spaced repetition, and active recall to help you study smarter, not harder.
             </p>
@@ -66,19 +66,19 @@ colors={[1, 2, 3, 1, 2, 3, 1, 4]}
             {/* Key Benefits */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
               <div className="text-center p-6 border border-gray-200 rounded-lg">
-                <Brain className="h-8 w-8 mx-auto mb-3 text-gray-600" />
+                <Brain className="h-8 w-8 mx-auto mb-3 text-white" />
                 <h3 className="font-semibold mb-2">AI-Powered</h3>
-                <p className="text-gray-600 text-sm">Smart flashcards generated from your content</p>
+                <p className="text-white text-sm">Smart flashcards generated from your content</p>
               </div>
               <div className="text-center p-6 border border-gray-200 rounded-lg">
-                <Clock className="h-8 w-8 mx-auto mb-3 text-gray-600" />
+                <Clock className="h-8 w-8 mx-auto mb-3 text-white" />
                 <h3 className="font-semibold mb-2">Spaced Repetition</h3>
-                <p className="text-gray-600 text-sm">Review at scientifically optimal intervals</p>
+                <p className="text-white text-sm">Review at scientifically optimal intervals</p>
               </div>
               <div className="text-center p-6 border border-gray-200 rounded-lg">
-                <Target className="h-8 w-8 mx-auto mb-3 text-gray-600" />
+                <Target className="h-8 w-8 mx-auto mb-3 text-white" />
                 <h3 className="font-semibold mb-2">Active Recall</h3>
-                <p className="text-gray-600 text-sm">Test yourself for better retention</p>
+                <p className="text-white text-sm">Test yourself for better retention</p>
               </div>
             </div>
 

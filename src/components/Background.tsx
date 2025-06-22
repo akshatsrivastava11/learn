@@ -4,7 +4,7 @@ import React from 'react'
 // Option 1: Using object destructuring (Recommended)
 function Background({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ width: '100%', height: '100vh', position: 'relative' }} className='z-0'>
+    <div style={{ width: '100%', height: '100vh', position: 'relative' }} className='z-0 pointer-events-none'>
       <Particles
         particleColors={['#ffffff', '#ffffff']}
         particleCount={200}

@@ -11,7 +11,8 @@ import * as pdfis from 'pdfjs-dist'
 
 export const extractPdf = async (
   file: File, 
-  onProgress?: (progress: number) => void
+  onProgress?: (progress: number) => void,
+  maxPages?: number
 ): Promise<string> => {
   if (file.type !== 'application/pdf') {
     throw new Error('File must be a PDF');
@@ -22,11 +23,12 @@ export const extractPdf = async (
   
   let allText = '';
   const totalPages = pdf.numPages;
+  const pagesToExtract = maxPages ? Math.min(totalPages, maxPages) : totalPages;
 
-  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+  for (let pageNum = 1; pageNum <= pagesToExtract; pageNum++) {
     const page = await pdf.getPage(pageNum);
     const viewport = page.getViewport({ scale: 2 });
-    
+    console.log("In the for loop for the ",pageNum,"time");
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     
@@ -54,6 +56,6 @@ export const extractPdf = async (
     
     allText += text + '\n\n';
   }
-
+console.log("the returned text is",allText);
   return allText;
 };

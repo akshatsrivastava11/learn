@@ -28,8 +28,10 @@ const secondaryVariant = {
 
 export const FileUpload = ({
   onChange,
+  childToParent
 }: {
   onChange?: (files: File[]) => void;
+  childToParent?:(file:File)=>void
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -37,6 +39,7 @@ export const FileUpload = ({
   const handleFileChange = (newFiles: File[]) => {
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     onChange && onChange(newFiles);
+    if (childToParent) childToParent(newFiles[0]);
   };
 
   const handleClick = () => {
@@ -57,7 +60,7 @@ export const FileUpload = ({
       <motion.div
         onClick={handleClick}
         whileHover="animate"
-        className="p-10 group/file block rounded-lg cursor-pointer w-full relative overflow-hidden"
+        className="p-10 group/file block rounded-lg cursor-pointer w-full relative overflow-hidden bg-black"
       >
         <input
           ref={fileInputRef}
@@ -73,7 +76,7 @@ export const FileUpload = ({
           <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-base">
             Upload file
           </p>
-          <p className="relative z-20 font-sans font-normal text-neutral-400 dark:text-neutral-400 text-base mt-2">
+          <p className="relative z-20 font-sans f1ont-normal text-neutral-400 dark:text-neutral-400 text-base mt-2">
             Drag or drop your files here or click to upload
           </p>
           <div className="relative w-full mt-10 max-w-xl mx-auto">
