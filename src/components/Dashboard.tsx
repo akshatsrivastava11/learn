@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { FileUpload } from "@/components/ui/file-upload"
 import { extractPdf } from "@/hooks/extractPdf"
 import { Brain, Plus, Calendar, Flame, Target, Clock, CheckCircle2, X } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useLLM } from '@/hooks/useLLM'
 import ElasticSlider from "@/blocks/Components/ElasticSlider/ElasticSlider"
 import * as pdfjsLib from 'pdfjs-dist'
@@ -51,6 +51,7 @@ export default function Dashboard() {
   const [selectedPages, setSelectedPages] = useState(1);
   const [isExtracted, setIsExtracted] = useState(false);
   const [maxSliderPages, setMaxSliderPages] = useState(10);
+  const [showQuizAlert, setShowQuizAlert] = useState(false);
   const toggleTodo = (id: number) => {
     setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)))
   }
@@ -116,7 +117,7 @@ export default function Dashboard() {
       console.log(returned_Quiz);
       const data=extractTextToQues(returned_Quiz)
       console.log("the quesn inn json is  ",data);
-
+      setShowQuizAlert(true);
     }
   };
 
@@ -162,6 +163,25 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen ">
+      {/* Alert for quiz ready */}
+      {showQuizAlert && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="bg-black border border-green-500 rounded-lg shadow-lg px-6 py-4 flex items-center space-x-4 animate-fade-in">
+            <CheckCircle2 className="text-green-500 w-6 h-6" />
+            <div>
+              <div className="text-white font-semibold">Quiz Ready!</div>
+              <div className="text-white text-sm">Move to the Quiz section to see your generated quiz.</div>
+            </div>
+            <button
+              onClick={() => setShowQuizAlert(false)}
+              className="ml-4 text-white hover:text-green-500 focus:outline-none"
+              aria-label="Dismiss alert"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
       {/* Header */}
       
       <div className="max-w-7xl mx-auto px-6 py-8">
