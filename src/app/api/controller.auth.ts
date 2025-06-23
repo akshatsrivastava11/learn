@@ -53,7 +53,7 @@ export const save_quizHandler=async (req:Request)=>{
   try {
      const {useremail,quesn}=await req.json();
      console.log("user email is ",useremail)
-     console.log("ques in ",quesn)
+     console.log("lenght of ques in handler is ",quesn.length)
       const userId=await prisma.user.findUnique({where:{email:useremail}})
       console.log(userId)
     if(userId==null) return
@@ -72,4 +72,32 @@ export const save_quizHandler=async (req:Request)=>{
     console.log("Quiz creation error",error)
   }
    return Response.json({message:"Quiz created successfully"},{status:200})
+}
+
+export const save_FlashcardsHandler=async (req:Request)=>{
+  try {
+    const {useremail,flashs}=await req.json()
+    console.log("User email is ",useremail);
+    console.log("Flashes are",flashs);
+    const userId=await prisma.user.findUnique({where:{email:useremail}});
+    console.log(userId);
+    if(userId==null) return
+    type returnForF={
+      Quesn:string,
+      Ans:string,
+      userId:string
+    }
+    const flashes=await prisma.flashcard.createMany({
+      data:flashs.map((f: { Quesn: string; Ans: string })=>({
+        Quesn:f.Quesn,
+        Ans:f.Ans,
+        userId:userId.id
+      })),
+    })
+    console.log("Flashcards added successfully",flashes);
+   return Response.json({message:"Quiz created successfully"},{status:200})
+  } catch (error) {
+    console.log("An error occured",error);
+  }
+
 }

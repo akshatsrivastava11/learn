@@ -42,7 +42,7 @@ export const extractTextToQues = async (text: string,user:any) => {
     Option2: q.options[1] || '',
     Option3: q.options[2] || '',
   }));
-  console.log("Formatted quesn is ",formattedQuestions)
+  console.log("Formatted quesn is ",formattedQuestions.length)
     // await saveQuesnsToDb(formattedQuestions,user)
     const sendToDb=await fetch("/api/save-quiz",{
       method:"POST",

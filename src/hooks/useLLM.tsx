@@ -4,8 +4,10 @@ const Together_api_key="156d88350d5bef6d35c983189f32dbd5e426fa6263efeb7ad2202592
 const meta_llama_endpoint="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"
 const together_api="https://api.together.xyz/v1/chat/completions"
 // JSON.stringify
-export const useLLM=async(message:string)=>{
-    const metadataforQuiz=`
+export const useLLM=async(message:string,usage:string)=>{
+    let metadataforQuiz;
+    if (usage=="Quiz"){
+     metadataforQuiz=`
     Generate the quiz based on the below given text with 10 quesn in it 
     with no other text (I repeat No other text) except each question starting with Q. and each ans starting with A. with the
     correct option being starting with ANS. like 
@@ -19,6 +21,16 @@ export const useLLM=async(message:string)=>{
 
     ${message}
     `
+    }
+    else {
+            metadataforQuiz=`
+    Generate 5 Ques and answer of about 1-2 lines for the given prompt
+    with no other text except the format like 
+    Q.ques1
+    Ans.ans
+    ${message}
+    `
+    }
     const response=await axios.post(
         together_api,
         JSON.stringify({

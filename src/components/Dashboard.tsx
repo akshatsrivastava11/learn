@@ -14,6 +14,7 @@ import { extractTextToQues } from '@/hooks/extractTextToQuesn'
 import { useUser } from '@clerk/nextjs'
 // import { useRouter } from 'next/router'
 import axios from 'axios'
+import { extractTextToFlashCards } from '@/hooks/extractTextToFlashcard'
 // Mock data for study activity (similar to GitHub contributions)
 const generateActivityData = () => {
   const data = []
@@ -76,11 +77,17 @@ useEffect(() => {
   const [isExtracted, setIsExtracted] = useState(false);
   const [maxSliderPages, setMaxSliderPages] = useState(10);
   const [showQuizAlert, setShowQuizAlert] = useState(false);
+  const [buttonClicked,setbuttonClicked]=useState("")
   const toggleTodo = (id: number) => {
     setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)))
   }
 
-  const handlecreatingflashcards =async  () => {
+  const handlecreatingquesn =async  () => {
+    setbuttonClicked("Quiz")
+    setShowUploadModal(true)
+  }
+  const handlecreatingflashcards=async  ()=>{
+    setbuttonClicked("Flashcards")
     setShowUploadModal(true)
   }
 
@@ -130,16 +137,22 @@ useEffect(() => {
     }
   };
 
-  const handleCreateFlashcards = async () => {
+  const handleCreateQuesn = async () => {
     // Handle creating flashcards from extracted text
     console.log('Creating flashcards from:', uploadedFiles);
     setUploadedFiles(undefined);
     setUploadProgress(0);
     setIsExtracted(false);
     if (text !== "") {
-      const returned_Quiz = await useLLM(text);
+      const returned_Quiz = await useLLM(text,buttonClicked);
       console.log(returned_Quiz);
-      const data=await extractTextToQues(returned_Quiz,user)
+      let data;
+      if(buttonClicked=='Quiz'){
+      data=await extractTextToQues(returned_Quiz,user)
+      }
+      else{
+        data=await extractTextToFlashCards(returned_Quiz,user)
+      }
       console.log("the quesn inn json is  ",data);
       setShowQuizAlert(true);
     }
@@ -213,11 +226,11 @@ useEffect(() => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-6">Welcome User</h1>
           <div className="flex gap-4">
-            <Button className="bg-black text-white hover:bg-gray-800" onClick={handlecreatingflashcards}>
+            <Button className="bg-black text-white hover:bg-gray-800" onClick={handlecreatingquesn}>
               <Plus className="w-4 h-4 mr-2" />
               Create Quiz
             </Button>
-            <Button variant="outline" className="bg-black text-white border-black hover:bg-black hover:text-white" >
+            <Button variant="outline" className="bg-black text-white border-black hover:bg-black hover:text-white" onClick={handlecreatingflashcards} >
               <Plus className="w-4 h-4 mr-2" />
               Create Flashcards
             </Button>
@@ -229,7 +242,7 @@ useEffect(() => {
           <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
             <div className="bg-gray-600 rounded-lg p-6 w-full max-w-md mx-4">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-black">Create Flashcards</h3>
+                <h3 className="text-lg font-semibold text-black">Create {buttonClicked}</h3>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -293,11 +306,11 @@ useEffect(() => {
                     </Button>
                   ) : (
                     <Button
-                      onClick={handleCreateFlashcards}
+                      onClick={handleCreateQuesn}
                       disabled={isUploading || !uploadedFiles}
                       className="flex-1 bg-white text-black hover:bg-gray-800"
                     >
-                      Create Flashcards
+                      Create {buttonClicked}
                     </Button>
                   )}
                   <Button
