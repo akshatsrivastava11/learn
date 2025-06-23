@@ -144,3 +144,21 @@ export const fetchquizquesn=async (req:Request)=>{
     console.log("An error occured",error);
   }
 }
+
+export const fetchFlashcard=async (req:Request)=>{
+  try {
+    const {useremail}=await req.json()
+    console.log("The user email is ",useremail);
+    const user=await prisma.user.findFirst({where:{email:useremail}})
+    if(!user) return 
+    const flashcards=await prisma.flashcard.findMany({
+      where:{
+        userId:user.id
+      }
+    })
+    console.log("the flashcards are",flashcards)
+    return Response.json({message:flashcards})
+  } catch (error) {
+    console.log("An error occured",error);
+  }
+}
