@@ -101,3 +101,46 @@ export const save_FlashcardsHandler=async (req:Request)=>{
   }
 
 }
+
+export const fetchUserQuiz=async (req:Request)=>{
+  
+  try {
+    const {useremail}=await req.json()
+    console.log("users email is",useremail);
+    const user=await prisma.user.findFirst({where:{email:useremail}})
+    if(!user) return ; 
+     let quizzes = await prisma.quiz.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        QuizQuesn: true, // Include the related questions (Quesn_Atoms)
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }); 
+    // return Response.json({message:quizzes});
+    return Response.json({message:quizzes},{status:200})
+  
+  } catch (error) {
+    console.log("An error occured",error);
+    
+  }
+}
+export const fetchquizquesn=async (req:Request)=>{
+  try {
+    const {quizId}=await req.json();
+    console.log("The quiz id is",quizId)
+    let quesn=await prisma.quesn_Atoms.findMany({
+      where:{
+        quizId:quizId
+      }
+    })
+    console.log("the quesn is",quesn);
+    
+    return Response.json({message:quesn});
+  } catch (error) {
+    console.log("An error occured",error);
+  }
+}
