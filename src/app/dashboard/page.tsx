@@ -5,7 +5,7 @@ import Dashboard from '@/components/Dashboard'
 import Side_bar from '@/components/Side_bar'
 import React from 'react'
 import Link from 'next/link'
-
+import { useUser } from '@clerk/nextjs'
 function page() {
     const items = [
         { label: "Home", href: "/" },
@@ -13,6 +13,7 @@ function page() {
         { label: "Profile", href: "/profile" },
         { label: "Settings", href: "/settings" },
     ];
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black text-white">
       <Background>
