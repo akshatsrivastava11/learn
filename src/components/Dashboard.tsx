@@ -139,7 +139,7 @@ useEffect(() => {
     if (text !== "") {
       const returned_Quiz = await useLLM(text);
       console.log(returned_Quiz);
-      const data=extractTextToQues(returned_Quiz)
+      const data=await extractTextToQues(returned_Quiz,user)
       console.log("the quesn inn json is  ",data);
       setShowQuizAlert(true);
     }

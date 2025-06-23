@@ -48,3 +48,28 @@ export const loginHandler = async (req: Request) => {
     return Response.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
+export const save_quizHandler=async (req:Request)=>{
+  try {
+     const {useremail,quesn}=await req.json();
+     console.log("user email is ",useremail)
+     console.log("ques in ",quesn)
+      const userId=await prisma.user.findUnique({where:{email:useremail}})
+      console.log(userId)
+    if(userId==null) return
+   const quiz=await prisma.quiz.create({
+    data:{
+        userId:userId.id,
+        QuizQuesn:{
+            create:quesn
+        }
+    },
+    include:{
+        QuizQuesn:true
+    }
+   })  
+  } catch (error) {
+    console.log("Quiz creation error",error)
+  }
+   return Response.json({message:"Quiz created successfully"},{status:200})
+}
