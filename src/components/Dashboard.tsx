@@ -6,12 +6,14 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { FileUpload } from "@/components/ui/file-upload"
 import { extractPdf } from "@/hooks/extractPdf"
 import { Brain, Plus, Calendar, Flame, Target, Clock, CheckCircle2, X } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useLLM } from '@/hooks/useLLM'
 import ElasticSlider from "@/blocks/Components/ElasticSlider/ElasticSlider"
 import * as pdfjsLib from 'pdfjs-dist'
 import { extractTextToQues } from '@/hooks/extractTextToQuesn'
-
+import { useUser } from '@clerk/nextjs'
+// import { useRouter } from 'next/router'
+import axios from 'axios'
 // Mock data for study activity (similar to GitHub contributions)
 const generateActivityData = () => {
   const data = []
@@ -28,6 +30,7 @@ const generateActivityData = () => {
   }
   return data
 }
+// const router=useRouter()
 
 const activityData = generateActivityData()
 
@@ -41,6 +44,27 @@ const initialTodos = [
 ]
 
 export default function Dashboard() {
+  const {user}=useUser()
+const sendResponse=useCallback(async ()=>{
+  if (user==null) return
+  await fetch("/api/sign",{
+    method:"POST",
+    headers:{
+      'Content-Type':"application/json"
+    },
+    body:JSON.stringify({
+      "email":user.emailAddresses[0].emailAddress,
+      "password":user.passkeys
+    })
+  })
+},[])
+useEffect(() => {
+  // if (user?.emailAddresses?.[0]?.emailAddress) {
+  if(user==null) return
+  console.log("The users email address is ",user.emailAddresses[0].emailAddress)
+    sendResponse();
+  // }
+}, [user, sendResponse]);
   const [todos, setTodos] = useState(initialTodos)
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -189,11 +213,11 @@ export default function Dashboard() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-6">Welcome User</h1>
           <div className="flex gap-4">
-            <Button className="bg-black text-white hover:bg-gray-800">
+            <Button className="bg-black text-white hover:bg-gray-800" onClick={handlecreatingflashcards}>
               <Plus className="w-4 h-4 mr-2" />
               Create Quiz
             </Button>
-            <Button variant="outline" className="bg-black text-white border-black hover:bg-black hover:text-white" onClick={handlecreatingflashcards}>
+            <Button variant="outline" className="bg-black text-white border-black hover:bg-black hover:text-white" >
               <Plus className="w-4 h-4 mr-2" />
               Create Flashcards
             </Button>

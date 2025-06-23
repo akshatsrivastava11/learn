@@ -9,6 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { useSignUp } from '@clerk/nextjs';
 import {OAuthStrategy} from '@clerk/types'
+import { useRouter } from "next/router";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -80,6 +81,7 @@ export default function SignupPage() {
       if (signupAttempt.status === 'complete') {
         await setActive({ session: signupAttempt.createdSessionId });
         console.log("User verified and signed in");
+        
       } else {
         console.error("Verification incomplete:", JSON.stringify(signupAttempt, null, 2));
         setError("Verification failed. Please check your code and try again.");
