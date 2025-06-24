@@ -1,8 +1,7 @@
 // controller.auth.ts
-
-import { PrismaClient } from '../../database/generated/prisma'
-
-const prisma = new PrismaClient()
+import { PrismaClient } from "../../database/generated/prisma";
+const prisma = new PrismaClient({ datasources: {  db: { url: "postgresql://neondb_owner:npg_1mKV4clqGgPe@ep-dark-fog-a8mqc1oz-pooler.eastus2.azure.neon.tech/neondb?sslmode=require" } } });
+// const prisma = new PrismaClient()
 
 export const registerHandler = async (req: Request) => {
   try {
