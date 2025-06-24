@@ -20,7 +20,6 @@ import { useUser } from "@clerk/nextjs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { MessageCircle, Send } from "lucide-react"
 import { GoogleGenAI } from "@google/genai"
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 interface Flashcard {
   id: string
@@ -39,7 +38,6 @@ interface FlashcardSet {
   createdAt: string
 }
 
-const isPublicRoute = createRouteMatcher(['/', '/sign-in(.*)'])
 
 export default function FlashcardLayout() {
   const [currentCard, setCurrentCard] = useState(0)

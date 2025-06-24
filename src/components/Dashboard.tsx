@@ -14,11 +14,12 @@ import { extractTextToQues } from "@/hooks/extractTextToQuesn"
 import { useUser } from "@clerk/nextjs"
 import { extractTextToFlashCards } from "@/hooks/extractTextToFlashcard"
 import { GoogleGenAI } from "@google/genai"
-// const router=useRouter()
+import { useRouter } from "next/navigation"
 
 // Mock todo items
 
 export default function Dashboard() {
+  const router=useRouter()
   const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY })
   const generateResponseFromGemini = async (content: string) => {
     const response = await ai.models.generateContent({
@@ -27,9 +28,14 @@ export default function Dashboard() {
     })
     return response.text
   }
-  const { user } = useUser()
+  const { user, isLoaded, isSignedIn } = useUser()
+  
   const sendResponse = useCallback(async () => {
-    if (user == null) return
+    if (!isLoaded || !isSignedIn) {
+      // Wait for Clerk to load and user to be signed in
+      return
+    }
+    console.log("user is not null")
     await fetch("/api/sign", {
       method: "POST",
       headers: {
@@ -40,14 +46,18 @@ export default function Dashboard() {
         password: user.passkeys,
       }),
     })
-  }, [])
+  }, [isLoaded, isSignedIn, user])
+
   useEffect(() => {
-    // if (user?.emailAddresses?.[0]?.emailAddress) {
-    if (user == null) return
+    if (!isLoaded) return; // Wait for Clerk to finish loading
+    if (!isSignedIn) {
+      console.log("user is null")
+      router.push("/")
+      return
+    }
     console.log("The users email address is ", user.emailAddresses[0].emailAddress)
     sendResponse()
-    // }
-  }, [user, sendResponse])
+  }, [isLoaded, isSignedIn, user, sendResponse])
 
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
