@@ -1,11 +1,9 @@
-import SplashCursor from '@/blocks/Animations/SplashCursor/SplashCursor'
 import GooeyNav from '@/blocks/Components/GooeyNav/GooeyNav'
 import Background from '@/components/Background'
 import Dashboard from '@/components/Dashboard'
 import Side_bar from '@/components/Side_bar'
 import React from 'react'
-import Link from 'next/link'
-import { useUser } from '@clerk/nextjs'
+
 function page() {
   const items = [
     { label: "Home", href: "/" },

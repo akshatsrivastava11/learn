@@ -57,6 +57,7 @@ export default function Dashboard() {
     }
     console.log("The users email address is ", user.emailAddresses[0].emailAddress)
     sendResponse()
+    callback()
   }, [isLoaded, isSignedIn, user, sendResponse])
 
   const [showUploadModal, setShowUploadModal] = useState(false)
@@ -76,9 +77,37 @@ export default function Dashboard() {
   const [isGenerating, setIsGenerating] = useState(false)
 
   // Mock counters - you can replace these with actual data from your API
-  const [quizzesGenerated, setQuizzesGenerated] = useState(12)
-  const [flashcardsGenerated, setFlashcardsGenerated] = useState(35)
+  const [quizzesGenerated, setQuizzesGenerated] = useState(0)
+  const [flashcardsGenerated, setFlashcardsGenerated] = useState(0)
+  const callback=useCallback(()=>{
+    (async ()=>{
+      if(!user)return
+      const useremail=user.emailAddresses[0].emailAddress
+      const responseforfetchnoOfquiz=await fetch("/api/fetchNoofQuiz",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          useremail:useremail
+        })
+      })
+      const text1=await responseforfetchnoOfquiz.json()
+      console.log(text1)
 
+      setQuizzesGenerated(text1.message)
+      const response2=await fetch("/api/fetchNoofFlashcards",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          useremail:useremail,
+        })
+      })
+      const  text2=await response2.json()
+      console.log(text2)
+      setFlashcardsGenerated(text2.message)
+    })()
+  },[])
   const handlecreatingquesn = async () => {
     setbuttonClicked("Quiz")
     setShowUploadModal(true)

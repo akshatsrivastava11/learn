@@ -2,9 +2,8 @@
 import Background from '@/components/Background'
 import Side_bar from '@/components/Side_bar'
 import { FileUpload } from '@/components/ui/file-upload'
-import { Sidebar } from '@/components/ui/sidebar'
-import { extractPdf } from '@/hooks/extractPdf'
-import React, { useEffect, useState } from 'react'
+
+import React, {  useState } from 'react'
 
 function page() {
   const [file,setfile]=useState<File|null>();

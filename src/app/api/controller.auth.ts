@@ -70,6 +70,7 @@ export const save_quizHandler=async (req:Request)=>{
         QuizQuesn:true
     }
    })  
+   console.log("the quiz is ",quiz)
   } catch (error) {
     console.log("Quiz creation error",error)
   }
@@ -84,11 +85,7 @@ export const save_FlashcardsHandler=async (req:Request)=>{
     const userId=await prisma.user.findUnique({where:{email:useremail}});
     console.log(userId);
     if(userId==null) return
-    type returnForF={
-      Quesn:string,
-      Ans:string,
-      userId:string
-    }
+   
     const flashe=flashs.slice(0,5)
     const flashes=await prisma.flashcard.createMany({
       data:flashe.map((f: { Quesn: string; Ans: string })=>({
@@ -112,7 +109,7 @@ export const fetchUserQuiz=async (req:Request)=>{
     console.log("users email is",useremail);
     const user=await prisma.user.findFirst({where:{email:useremail}})
     if(!user) return ; 
-     let quizzes = await prisma.quiz.findMany({
+     const quizzes = await prisma.quiz.findMany({
       where: {
         userId: user.id,
       },
@@ -135,7 +132,7 @@ export const fetchquizquesn=async (req:Request)=>{
   try {
     const {quizId}=await req.json();
     console.log("The quiz id is",quizId)
-    let quesn=await prisma.quesn_Atoms.findMany({
+    const quesn=await prisma.quesn_Atoms.findMany({
       where:{
         quizId:quizId
       }
@@ -163,5 +160,34 @@ export const fetchFlashcard=async (req:Request)=>{
     return Response.json({message:flashcards})
   } catch (error) {
     console.log("An error occured",error);
+  }
+}
+
+export const fetchnoofflashcards=async (req:Request)=>{
+  try {
+    const {useremail}=await req.json()
+    console.log("the user emal is ",useremail);
+    const user=await prisma.user.findFirst({where:{email:useremail}})
+    if(!user) return 
+    const  noOfFllashcards=await prisma.flashcard.count({
+      where:{userId:user.id}
+    })
+    return Response.json({message:noOfFllashcards})
+  } catch (error) {
+    console.log("An error occured",error);
+  }
+}
+export const fetchnoofquiz=async(req:Request)=>{
+  try {
+    const {useremail}=await req.json()
+    console.log("the user emal is ",useremail);
+    const user=await prisma.user.findFirst({where:{email:useremail}})
+    if(!user) return 
+    const  noOfQuiz=await prisma.quiz.count({
+      where:{userId:user.id}
+    })
+    return Response.json({message:noOfQuiz})
+  } catch (error) {
+    console.log("An error occured",error)
   }
 }

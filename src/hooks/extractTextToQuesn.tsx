@@ -1,6 +1,6 @@
 // import { saveQuesnsToDb } from "./saveQuesnToDb";
 
-export const extractTextToQues = async (text: string,user:any, quizName?: string) => {
+export const extractTextToQues = async (text: string, user: unknown, quizName?: string) => {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
     const questions = [];
   
@@ -44,14 +44,15 @@ export const extractTextToQues = async (text: string,user:any, quizName?: string
   }));
   console.log("Formatted quesn is ",formattedQuestions.length)
     // await saveQuesnsToDb(formattedQuestions,user)
+    const email = typeof user === 'object' && user !== null && 'emailAddresses' in user && Array.isArray((user as any).emailAddresses) && (user as any).emailAddresses[0]?.emailAddress;
     const sendToDb=await fetch("/api/save-quiz",{
       method:"POST",
       headers:{
         'Content-Type':'application/json'
       },
       body:JSON.stringify({
-        useremail:user.emailAddresses[0].emailAddress,
-        quesn:formattedQuestions,
+        useremail: email,
+        quesn: formattedQuestions,
         QuizName: quizName || "Untitled Quiz"
       }),
 

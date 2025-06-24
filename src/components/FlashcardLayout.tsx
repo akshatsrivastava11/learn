@@ -32,10 +32,11 @@ interface Flashcard {
 
 interface FlashcardSet {
   id: string
-  title: string
-  description: string
+  Quesn: string
+  Ans: string
   cards: Flashcard[]
   createdAt: string
+  difficulty:"hard"
 }
 
 
@@ -215,7 +216,7 @@ export default function FlashcardLayout() {
         
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {flashcardSets.map((card: any) => (
+            {flashcardSets.map((card: FlashcardSet) => (
               <div
                 key={card.id}
                 className="relative w-full h-64 cursor-pointer perspective"
@@ -227,13 +228,7 @@ export default function FlashcardLayout() {
                     <span className="text-xs uppercase tracking-wider text-gray-400 mb-4">Question</span>
                     <h2 className="text-lg font-semibold text-center mb-4">{card.Quesn}</h2>
                     {card.difficulty && (
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs ${
-                        card.difficulty === "easy" 
-                          ? "bg-green-900 text-green-400 border border-green-800" 
-                          : card.difficulty === "medium" 
-                          ? "bg-yellow-900 text-yellow-400 border border-yellow-800" 
-                          : "bg-red-900 text-red-400 border border-red-800"
-                      }`}>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs`}>
                         hard
                       </span>
                     )}

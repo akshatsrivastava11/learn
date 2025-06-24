@@ -51,12 +51,12 @@ export default function SignupPage() {
       });
       
       setVerify(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Signup error:", err);
       
       // Handle specific Clerk errors
-      if (err.errors && err.errors.length > 0) {
-        const errorMessage = err.errors[0].long_message || err.errors[0].message;
+      if (err instanceof Array && err.length > 0) {
+        const errorMessage = err[0].long_message || err[0].message;
         setError(errorMessage);
       } else {
         setError("An error occurred during signup. Please try again.");
@@ -86,11 +86,11 @@ export default function SignupPage() {
         console.error("Verification incomplete:", JSON.stringify(signupAttempt, null, 2));
         setError("Verification failed. Please check your code and try again.");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Verification error:", err);
       
-      if (err.errors && err.errors.length > 0) {
-        const errorMessage = err.errors[0].long_message || err.errors[0].message;
+      if (err instanceof Array && err.length > 0) {
+        const errorMessage = err[0].long_message || err[0].message;
         setError(errorMessage);
       } else {
         setError("An error occurred during verification. Please try again.");

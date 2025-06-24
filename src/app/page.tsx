@@ -1,6 +1,6 @@
 "use client"
 
-import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs"
+import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
 import GooeyNav from "@/blocks/Components/GooeyNav/GooeyNav"
 import Squares from "@/blocks/Backgrounds/Squares/Squares"
 import SplashCursor from "@/blocks/Animations/SplashCursor/SplashCursor"
@@ -14,8 +14,6 @@ import {
   ArrowRight,
   CheckCircle,
   Shield,
-  Smartphone,
-  BarChart3,
   Twitter,
   MessageSquare,
   Mail,
@@ -30,7 +28,7 @@ const items = [
 ]
 
 export default function HomePage() {
-  const { isSignedIn, user } = useUser()
+  const { isSignedIn } = useUser()
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -331,7 +329,7 @@ export default function HomePage() {
       </section>
 
       {/* Social Proof */}
-      <section className="px-4 py-16 bg-gray-900/50">
+      {/* <section className="px-4 py-16 bg-gray-900/50">
         <div className="max-w-4xl mx-auto text-center">
           <Badge className="mb-4 bg-green-600/20 text-green-400 border-green-600/30">💬 Student Success</Badge>
           <h2 className="text-3xl font-bold mb-8 text-white">Loved by Students Worldwide</h2>
@@ -339,8 +337,8 @@ export default function HomePage() {
             <Card className="bg-gray-800/50 border-gray-700">
               <CardContent className="p-6">
                 <p className="text-gray-300 mb-4">
-                  "StudyAI helped me cut my study time in half while improving my grades. The spaced repetition is a
-                  game-changer for medical school!"
+                  StudyAI helped me cut my study time in half while improving my grades. The spaced repetition is a
+                  game-changer for medical school!
                 </p>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -356,8 +354,8 @@ export default function HomePage() {
             <Card className="bg-gray-800/50 border-gray-700">
               <CardContent className="p-6">
                 <p className="text-gray-300 mb-4">
-                  "Finally, a study tool that actually works with how my brain learns. The AI flashcards are incredibly
-                  accurate and save me hours of prep time."
+                  Finally, a study tool that actually works with how my brain learns. The AI flashcards are incredibly
+                  accurate and save me hours of prep time.
                 </p>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-blue-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -372,7 +370,7 @@ export default function HomePage() {
             </Card>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="px-4 py-16 bg-gradient-to-r from-blue-900/50 to-purple-900/50">
