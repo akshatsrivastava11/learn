@@ -1,6 +1,6 @@
 // controller.auth.ts
 
-import { PrismaClient } from '@/database/generated/prisma'
+import { PrismaClient } from '../../database/generated/prisma'
 
 const prisma = new PrismaClient()
 
