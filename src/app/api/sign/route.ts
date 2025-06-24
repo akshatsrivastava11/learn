@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 
 import { registerHandler } from '../controller.auth'
 

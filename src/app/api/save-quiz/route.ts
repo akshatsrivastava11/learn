@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client"
+// import { PrismaClient } from "@prisma/client"
 import { save_quizHandler } from "../controller.auth"
-const prismaClient = new PrismaClient()
+// const prismaClient = new PrismaClient()
 
 export async function POST(req: Request) {
     // const {quesn}=await req.json()
