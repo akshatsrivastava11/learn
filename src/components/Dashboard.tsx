@@ -232,14 +232,20 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen ">
-      {/* Alert for quiz ready */}
-      {showQuizAlert && (
+      {/* Alert for quiz ready - Only show when modal is NOT open */}
+      {showQuizAlert && !showUploadModal && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
           <div className="bg-black border border-green-500 rounded-lg shadow-lg px-6 py-4 flex items-center space-x-4 animate-fade-in">
             <CheckCircle2 className="text-green-500 w-6 h-6" />
             <div>
-              <div className="text-white font-semibold">Quiz Ready!</div>
-              <div className="text-white text-sm">Move to the Quiz section to see your generated quiz.</div>
+              <div className="text-white font-semibold">
+                {buttonClicked === "Quiz" ? "Quiz Ready!" : "Flashcards Ready!"}
+              </div>
+              <div className="text-white text-sm">
+                {buttonClicked === "Quiz"
+                  ? "Move to the Quiz section to see your generated quiz."
+                  : "Move to the Flashcards section to see your generated flashcards."}
+              </div>
             </div>
             <button
               onClick={() => setShowQuizAlert(false)}
@@ -280,7 +286,33 @@ export default function Dashboard() {
         {/* File Upload Modal */}
         {showUploadModal && (
           <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
-            <div className="bg-gray-600 rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="relative bg-gray-600 rounded-lg p-6 w-full max-w-md mx-4">
+              {/* Alert inside modal - positioned relative to modal */}
+              {showQuizAlert && (
+                <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-full max-w-sm z-10">
+                  <div className="bg-black border border-green-500 rounded-lg shadow-lg px-4 py-3 flex items-center space-x-3 animate-fade-in">
+                    <CheckCircle2 className="text-green-500 w-5 h-5 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white font-semibold text-sm">
+                        {buttonClicked === "Quiz" ? "Quiz Ready!" : "Flashcards Ready!"}
+                      </div>
+                      <div className="text-white text-xs truncate">
+                        {buttonClicked === "Quiz"
+                          ? "Move to Quiz section to view"
+                          : "Move to Flashcards section to view"}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setShowQuizAlert(false)}
+                      className="text-white hover:text-green-500 focus:outline-none flex-shrink-0"
+                      aria-label="Dismiss alert"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-black">Create {buttonClicked}</h3>
                 <Button variant="ghost" size="sm" onClick={closeModal} className="text-black hover:bg-gray-100">
