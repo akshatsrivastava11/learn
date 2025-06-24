@@ -177,10 +177,6 @@ const config = {
       },
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x"
-      },
-      {
-        "fromEnvVar": null,
         "value": "rhel-openssl-3.0.x"
       }
     ],
@@ -189,8 +185,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.10.1",
@@ -208,8 +203,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         String      @id @unique @default(cuid())\n  email      String      @unique\n  Quizes     Quiz[]\n  flashcards Flashcard[]\n  tasks      Task[]\n}\n\nmodel Flashcard {\n  id     String @id @default(cuid())\n  Quesn  String\n  Ans    String\n  user   User   @relation(fields: [userId], references: [id])\n  userId String\n}\n\nmodel Quesn_Atoms {\n  id      String  @id @unique @default(cuid())\n  Quesn   String\n  Answer  String\n  Option1 String\n  Option2 String\n  Option3 String\n  Quiz    Quiz?   @relation(fields: [quizId], references: [id])\n  quizId  String?\n}\n\nmodel Quiz {\n  createdAt DateTime      @default(now()) // Timestamp when the quiz is generated\n  id        String        @id @unique @default(cuid())\n  QuizQuesn Quesn_Atoms[]\n  User      User?         @relation(fields: [userId], references: [id])\n  userId    String?\n  QuizName  String?\n}\n\nmodel Task {\n  id          String  @id @default(cuid())\n  title       String\n  description String?\n  completed   Boolean @default(false)\n  user        User    @relation(fields: [userId], references: [id])\n  userId      String\n}\n",
-  "inlineSchemaHash": "5f669901cbd25a5fede64af834045a967544c70b581cca3d92ca90b0189a33be",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"] // ✅ required for Vercel\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         String      @id @unique @default(cuid())\n  email      String      @unique\n  Quizes     Quiz[]\n  flashcards Flashcard[]\n  tasks      Task[]\n}\n\nmodel Flashcard {\n  id     String @id @default(cuid())\n  Quesn  String\n  Ans    String\n  user   User   @relation(fields: [userId], references: [id])\n  userId String\n}\n\nmodel Quesn_Atoms {\n  id      String  @id @unique @default(cuid())\n  Quesn   String\n  Answer  String\n  Option1 String\n  Option2 String\n  Option3 String\n  Quiz    Quiz?   @relation(fields: [quizId], references: [id])\n  quizId  String?\n}\n\nmodel Quiz {\n  createdAt DateTime      @default(now()) // Timestamp when the quiz is generated\n  id        String        @id @unique @default(cuid())\n  QuizQuesn Quesn_Atoms[]\n  User      User?         @relation(fields: [userId], references: [id])\n  userId    String?\n  QuizName  String?\n}\n\nmodel Task {\n  id          String  @id @default(cuid())\n  title       String\n  description String?\n  completed   Boolean @default(false)\n  user        User    @relation(fields: [userId], references: [id])\n  userId      String\n}\n",
+  "inlineSchemaHash": "e5a01015249e8dd89d60ac065e5548d034b0e7ea8ddf10054ef93dc6115169b7",
   "copyEngine": true
 }
 config.dirname = '/'
