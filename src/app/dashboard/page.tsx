@@ -7,15 +7,19 @@ import React from 'react'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
 function page() {
-    const items = [
-        { label: "Home", href: "/" },
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Profile", href: "/profile" },
-        { label: "Settings", href: "/settings" },
-    ];
+  const items = [
+    { label: "Home", href: "/" },
+    { label: "Dashboard", href: "/dashboard" },
+    // { label: "Profile", href: "/profile" },
+    // { label: "Settings", href: "/settings" },
+    // {label:"Logout",href:"/logout"},
+    // {label:"Quizes",href:"/quiz"},
+    
+];
+
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black text-white">
+    <div className="relative w-full h-screen  bg-black text-white">
       <Background>
         {/* <SplashCursor/> */}
         <GooeyNav

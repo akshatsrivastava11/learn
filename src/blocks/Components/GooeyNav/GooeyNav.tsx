@@ -3,11 +3,12 @@
 */
 'use client'
 import React, { useRef, useEffect, useState } from "react";
-
+import { SignOutButton } from '@clerk/nextjs'
 interface GooeyNavItem {
   label: string;
   href: string;
 }
+import { useUser } from "@clerk/nextjs";
 
 export interface GooeyNavProps {
   items: GooeyNavItem[];
@@ -21,6 +22,7 @@ export interface GooeyNavProps {
 }
 
 const GooeyNav: React.FC<GooeyNavProps> = ({
+
   items,
   animationTime = 600,
   particleCount = 15,
@@ -30,6 +32,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
   initialActiveIndex = 0,
 }) => {
+  const {user}=useUser()
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLUListElement>(null);
   const filterRef = useRef<HTMLSpanElement>(null);
@@ -305,6 +308,8 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           }
         `}
       </style>
+      <div className="flex  px-60">
+      <h1 className="text-4xl font-extrabold mt-10 mb-8 text-center tracking-tight drop-shadow-lg">Learn</h1>
       <div className="relative flex justify-center items-center w-full" ref={containerRef}>
         <nav
           className="flex relative"
@@ -333,12 +338,51 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
                 >
                   {item.label}
                 </a>
+                
+
               </li>
             ))}
+           { user ?<li
+                key={3}
+                className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-gray-400 ${
+                  activeIndex === 3 ? "active" : ""
+                }`}
+                onClick={(e) => handleClick(e, 3)}
+              >
+                <SignOutButton>
+                <a
+                  // href={3.href}
+                  // onKeyDown={(e) => handleKeyDown(e, 3)}
+                  className="outline-none"
+                >
+                  Logout
+                </a>
+                </SignOutButton>
+                </li>:
+                <li
+                key={3}
+                className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-gray-400 ${
+                  activeIndex === 3 ? "active" : ""
+                }`}
+                onClick={(e) => handleClick(e, 3)}
+              >
+                {/* <SignOutButton> */}
+                <a
+                  href={'/sign'}
+                  // onKeyDown={(e) => handleKeyDown(e, 3)}
+                  className="outline-none"
+                >
+                  Login/Signup
+                </a>
+                {/* </SignOutButton> */}
+                </li>
+                }
           </ul>
         </nav>
         <span className="effect filter" ref={filterRef} />
         <span className="effect text" ref={textRef} />
+      </div>
+
       </div>
     </>
   );

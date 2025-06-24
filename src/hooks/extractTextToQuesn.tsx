@@ -1,6 +1,6 @@
 // import { saveQuesnsToDb } from "./saveQuesnToDb";
 
-export const extractTextToQues = async (text: string,user:any) => {
+export const extractTextToQues = async (text: string,user:any, quizName?: string) => {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line !== '');
     const questions = [];
   
@@ -52,6 +52,7 @@ export const extractTextToQues = async (text: string,user:any) => {
       body:JSON.stringify({
         useremail:user.emailAddresses[0].emailAddress,
         quesn:formattedQuestions,
+        QuizName: quizName || "Untitled Quiz"
       }),
 
     })

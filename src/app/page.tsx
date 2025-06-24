@@ -1,14 +1,14 @@
 import GooeyNav from "@/blocks/Components/GooeyNav/GooeyNav";
 import Squares from "@/blocks/Backgrounds/Squares/Squares";
 import SplashCursor from "@/blocks/Animations/SplashCursor/SplashCursor";
-  const items = [
-
-  { label: "Home", href: "#" },
-
-  { label: "About", href: "#" },
-
-  { label: "Contact", href: "#" },
-
+const items = [
+  { label: "Home", href: "/" },
+  { label: "Dashboard", href: "/dashboard" },
+  // { label: "Profile", href: "/profile" },
+  // { label: "Settings", href: "/settings" },
+  // {label:"Logout",href:"/logout"},
+  // {label:"Quizes",href:"/quiz"},
+  
 ];
 
 import { Button } from "@/components/ui/button"
