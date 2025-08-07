@@ -42,3 +42,8 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+/.cursor
+/public
+/src/database/generated
+/src/database/prisma/migrations

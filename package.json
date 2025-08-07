@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-"build": "npx prisma db push --schema=src/database/prisma/schema.prisma && npx prisma generate --schema=src/database/prisma/schema.prisma && next build",
+    "build": "npx prisma db push --schema=src/database/prisma/schema.prisma && npx prisma generate --schema=src/database/prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall":"npx prisma generate --schema=src/database/prisma/schema.prisma"
+    "postinstall": "npx prisma generate --schema=src/database/prisma/schema.prisma"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.22.0",
@@ -27,7 +27,7 @@
     "clerk": "^0.8.3",
     "clsx": "^2.1.1",
     "console": "^0.7.2",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "framer-motion": "^12.18.1",
     "lucide-react": "^0.522.0",
@@ -40,6 +40,7 @@
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.58.1",
+    "react-hot-toast": "^2.5.2",
     "swr": "^2.3.3",
     "tailwind-merge": "^3.3.1",
     "tesseract.js": "^6.0.1",
