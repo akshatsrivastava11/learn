@@ -163,7 +163,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/zeek1108/Desktop/learn/src/database/generated/prisma",
+      "value": "/home/zeek1108/learn/src/database/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -181,7 +181,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/zeek1108/Desktop/learn/src/database/prisma/schema.prisma",
+    "sourceFilePath": "/home/zeek1108/learn/src/database/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

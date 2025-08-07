@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileUpload } from "@/components/ui/file-upload"
 import { extractPdf } from "@/hooks/extractPdf"
-import { Brain, Plus, CheckCircle2, X, FileText, Layers } from "lucide-react"
+import { Brain, Plus, CheckCircle2, X, FileText, Layers } from 'lucide-react'
 import { useState, useEffect, useCallback } from "react"
 import { useLLM } from "@/hooks/useLLM"
 import ElasticSlider from "@/blocks/Components/ElasticSlider/ElasticSlider"
@@ -15,6 +15,7 @@ import { useUser } from "@clerk/nextjs"
 import { extractTextToFlashCards } from "@/hooks/extractTextToFlashcard"
 import { GoogleGenAI } from "@google/genai"
 import { useRouter } from "next/navigation"
+import { showToast } from "@/lib/toast"
 
 // Mock todo items
 
@@ -69,7 +70,6 @@ export default function Dashboard() {
   const [selectedPages, setSelectedPages] = useState(1)
   const [isExtracted, setIsExtracted] = useState(false)
   const [maxSliderPages, setMaxSliderPages] = useState(10)
-  const [showQuizAlert, setShowQuizAlert] = useState(false)
   const [buttonClicked, setbuttonClicked] = useState("")
   const [quizName, setQuizName] = useState("")
   const [chatMessages, setChatMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([])
@@ -159,6 +159,7 @@ export default function Dashboard() {
       settext(text)
     } catch (error) {
       console.log("An error occurred ", error)
+      showToast.error("Failed to extract PDF. Please try again.")
       setIsUploading(false)
       setIsExtracted(false)
     }
@@ -171,20 +172,27 @@ export default function Dashboard() {
     setUploadProgress(0)
     setIsExtracted(false)
     if (text !== "") {
-      const returned_Quiz = await useLLM(text, buttonClicked)
-      console.log(returned_Quiz)
-      let data
-      if (buttonClicked == "Quiz") {
-        data = await extractTextToQues(returned_Quiz, user, quizName)
-        // Increment quiz counter
-        setQuizzesGenerated((prev) => prev + 1)
-      } else {
-        data = await extractTextToFlashCards(returned_Quiz, user)
-        // Increment flashcards counter
-        setFlashcardsGenerated((prev) => prev + 1)
+      const toastId = showToast.loading(`Generating ${buttonClicked}...`);
+      try {
+        const returned_Quiz = await useLLM(text, buttonClicked)
+        console.log(returned_Quiz)
+        let data
+        if (buttonClicked == "Quiz") {
+          data = await extractTextToQues(returned_Quiz, user, quizName)
+          // Increment quiz counter
+          setQuizzesGenerated((prev) => prev + 1)
+          showToast.success("Quiz generated successfully!", toastId)
+        } else {
+          data = await extractTextToFlashCards(returned_Quiz, user)
+          // Increment flashcards counter
+          setFlashcardsGenerated((prev) => prev + 1)
+          showToast.success("Flashcards generated successfully!", toastId)
+        }
+        console.log("the quesn inn json is  ", data)
+      } catch (error) {
+        console.error("Error generating content:", error);
+        showToast.error(`Failed to generate ${buttonClicked}. Please try again.`, toastId);
       }
-      console.log("the quesn inn json is  ", data)
-      setShowQuizAlert(true)
     }
   }
 
@@ -218,6 +226,7 @@ export default function Dashboard() {
         ...prev,
         { role: "assistant", content: "Sorry, I encountered an error. Please try again." },
       ])
+      showToast.error("Failed to get AI response. Please try again.")
     } finally {
       setIsGenerating(false)
     }
@@ -233,7 +242,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen ">
       {/* Alert for quiz ready - Only show when modal is NOT open */}
-      {showQuizAlert && !showUploadModal && (
+      {/* {showQuizAlert && !showUploadModal && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
           <div className="bg-black border border-green-500 rounded-lg shadow-lg px-6 py-4 flex items-center space-x-4 animate-fade-in">
             <CheckCircle2 className="text-green-500 w-6 h-6" />
@@ -256,7 +265,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Welcome Section */}
@@ -288,7 +297,7 @@ export default function Dashboard() {
           <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
             <div className="relative bg-gray-600 rounded-lg p-6 w-full max-w-md mx-4">
               {/* Alert inside modal - positioned relative to modal */}
-              {showQuizAlert && (
+              {/* {showQuizAlert && (
                 <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-full max-w-sm z-10">
                   <div className="bg-black border border-green-500 rounded-lg shadow-lg px-4 py-3 flex items-center space-x-3 animate-fade-in">
                     <CheckCircle2 className="text-green-500 w-5 h-5 flex-shrink-0" />
@@ -311,7 +320,7 @@ export default function Dashboard() {
                     </button>
                   </div>
                 </div>
-              )}
+              )} */}
               
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-black">Create {buttonClicked}</h3>

@@ -10,6 +10,7 @@ import {
 import { useSignUp } from '@clerk/nextjs';
 import {OAuthStrategy} from '@clerk/types'
 import { useRouter } from "next/router";
+import { showToast } from "@/lib/toast";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ export default function SignupPage() {
   const [verify, setVerify] = useState(false);
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState(""); // Removed, replaced by toast
 
   const { isLoaded, signUp, setActive } = useSignUp();
   const signUpWith=async (strategy:OAuthStrategy)=>{
@@ -35,7 +36,7 @@ export default function SignupPage() {
     if (!isLoaded) return;
     
     setIsLoading(true);
-    setError("");
+    // setError(""); // Removed
     
     try {
       console.log("Creating signup attempt...");
@@ -51,16 +52,13 @@ export default function SignupPage() {
       });
       
       setVerify(true);
-    } catch (err: unknown) {
+      showToast.loading("Verification code sent to your email.");
+    } catch (err: any) { // Catching as 'any' to access errors array
       console.error("Signup error:", err);
       
       // Handle specific Clerk errors
-      if (err instanceof Array && err.length > 0) {
-        const errorMessage = err[0].long_message || err[0].message;
-        setError(errorMessage);
-      } else {
-        setError("An error occurred during signup. Please try again.");
-      }
+      const errorMessage = err.errors?.[0]?.longMessage || "An error occurred during signup. Please try again.";
+      showToast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +69,7 @@ export default function SignupPage() {
     if (!isLoaded) return;
     
     setIsLoading(true);
-    setError("");
+    // setError(""); // Removed
     
     try {
       const signupAttempt = await signUp.attemptEmailAddressVerification({ 
@@ -81,20 +79,16 @@ export default function SignupPage() {
       if (signupAttempt.status === 'complete') {
         await setActive({ session: signupAttempt.createdSessionId });
         console.log("User verified and signed in");
-        
+        showToast.success("Account created and verified successfully!");
       } else {
         console.error("Verification incomplete:", JSON.stringify(signupAttempt, null, 2));
-        setError("Verification failed. Please check your code and try again.");
+        showToast.error("Verification failed. Please check your code and try again.");
       }
-    } catch (err: unknown) {
+    } catch (err: any) { // Catching as 'any' to access errors array
       console.error("Verification error:", err);
       
-      if (err instanceof Array && err.length > 0) {
-        const errorMessage = err[0].long_message || err[0].message;
-        setError(errorMessage);
-      } else {
-        setError("An error occurred during verification. Please try again.");
-      }
+      const errorMessage = err.errors?.[0]?.longMessage || "An error occurred during verification. Please try again.";
+      showToast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -110,11 +104,11 @@ export default function SignupPage() {
           Sign up to get started with your account
         </p>
 
-        {error && (
+        {/* {error && ( // Removed
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
             <p className="text-sm text-red-600">{error}</p>
           </div>
-        )}
+        )} */}
 
         {!verify ? (
           <form className="my-8" onSubmit={handleSubmit}>

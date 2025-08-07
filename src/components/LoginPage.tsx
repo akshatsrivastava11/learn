@@ -10,6 +10,8 @@ import {
 } from "@tabler/icons-react";
 import { useSignIn } from '@clerk/nextjs';
 import {OAuthStrategy} from '@clerk/types'
+import { showToast } from "@/lib/toast";
+
 export default function LoginPage() {
   const [email, setemail] = useState("");
   const [pass, setpass] = useState("");
@@ -37,12 +39,14 @@ export default function LoginPage() {
       });
       if (response.status === 'complete') {
         await setActive({ session: response.createdSessionId });
-        console.log("User signed in");
+        showToast.success("Login successful!");
       } else if (response.status === 'needs_first_factor') {
         setverify(true);
+        showToast.loading("Verification code sent to your email.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("An error occurred ", error);
+      showToast.error(error.errors?.[0]?.longMessage || "Login failed. Please check your credentials.");
     }
   };
 
@@ -53,12 +57,14 @@ export default function LoginPage() {
       const attempt = await signIn.attemptFirstFactor({ strategy: 'email_code', code });
       if (attempt.status === 'complete') {
         await setActive({ session: attempt.createdSessionId });
-        console.log("User verified and signed in");
+        showToast.success("Email verified and logged in!");
       } else {
         setverify(true);
+        showToast.error("Verification failed. Please check the code.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("An error occurred ", error);
+      showToast.error(error.errors?.[0]?.longMessage || "Verification failed. Please try again.");
     }
   };
 

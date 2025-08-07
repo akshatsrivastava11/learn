@@ -1,32 +1,34 @@
 import { toast } from "react-hot-toast"
 
 export const showToast = {
-  success: (message: string) => {
+  success: (message: string, toastId?: string) => {
     toast.success(message, {
+      id: toastId, // Use provided ID for dismissal
       duration: 4000,
       position: "top-right",
       style: {
-        background: "#00ff00",
-        color: "#000",
+        background: "#16a34a", // Tailwind green-600
+        color: "#fff",
         fontWeight: "bold",
-        border: "4px solid #000",
-        borderRadius: "0px",
-        boxShadow: "4px 4px 0px #000",
+        border: "1px solid #22c55e", // Tailwind green-500
+        borderRadius: "8px", // Slightly rounded corners
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow
       },
     })
   },
 
-  error: (message: string) => {
+  error: (message: string, toastId?: string) => {
     toast.error(message, {
+      id: toastId, // Use provided ID for dismissal
       duration: 5000,
       position: "top-right",
       style: {
-        background: "#ff0000",
+        background: "#dc2626", // Tailwind red-600
         color: "#fff",
         fontWeight: "bold",
-        border: "4px solid #000",
-        borderRadius: "0px",
-        boxShadow: "4px 4px 0px #000",
+        border: "1px solid #ef4444", // Tailwind red-500
+        borderRadius: "8px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
       },
     })
   },
@@ -35,12 +37,12 @@ export const showToast = {
     return toast.loading(message, {
       position: "top-right",
       style: {
-        background: "#ffff00",
-        color: "#000",
+        background: "#4b5563", // Tailwind gray-700
+        color: "#fff",
         fontWeight: "bold",
-        border: "4px solid #000",
-        borderRadius: "0px",
-        boxShadow: "4px 4px 0px #000",
+        border: "1px solid #6b7280", // Tailwind gray-600
+        borderRadius: "8px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
       },
     })
   },
@@ -54,26 +56,28 @@ export const showToast = {
       position: "top-right",
       style: {
         fontWeight: "bold",
-        border: "4px solid #000",
-        borderRadius: "0px",
-        boxShadow: "4px 4px 0px #000",
+        borderRadius: "8px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
       },
       success: {
         style: {
-          background: "#00ff00",
-          color: "#000",
+          background: "#16a34a", // Tailwind green-600
+          color: "#fff",
+          border: "1px solid #22c55e",
         },
       },
       error: {
         style: {
-          background: "#ff0000",
+          background: "#dc2626", // Tailwind red-600
           color: "#fff",
+          border: "1px solid #ef4444",
         },
       },
       loading: {
         style: {
-          background: "#ffff00",
-          color: "#000",
+          background: "#4b5563", // Tailwind gray-700
+          color: "#fff",
+          border: "1px solid #6b7280",
         },
       },
     })
